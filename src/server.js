@@ -25,52 +25,35 @@ app.use(
   }),
 );
 
-app.post('/users', (req, res) => {
-  console.log(req.body);
-  res.status(201).json({ message: 'User created' });
-});
-
-app.use((req, res, next) => {
-  console.log(`Time: ${new Date().toLocaleString()}`);
-  next();
-});
-
-app.get('/', (req, res) => {
+app.get('/notes', (req, res) => {
   res.status(200).json({
-    message: `this server runing ${PORT}`,
-  });
-});
-app.get('/app', (req, res) => {
-  res.status(200).json({
-    message: `this server runing app ${PORT}`,
+    message: 'Retrieved all notes',
   });
 });
 
-app.get('/app/:id', (req, res) => {
-  const { Id } = req.params;
-  res.status(200).json({ id: Id, name: 'Jacob' });
+app.get('/notes/:noteId', (req, res) => {
+  const { noteId } = req.params;
+  res.status(200).json({
+    message: `Retrieved note with ID: ${noteId}`,
+  });
 });
 
-app.use((req, res) => {
-  console.log(res.status(404).json({ message: 'Route not found' }));
-});
-
-app.get('/test-err', (req, res) => {
-  throw new Error('EROORORORORRRRR');
+app.get('/test-error', () => {
+  throw new Error('Simulated server error');
 });
 
 app.use((err, req, res, next) => {
-  console.error(err);
-
-  const isProd = process.env.NODE_ENV === 'production';
-
   res.status(500).json({
-    message: isProd
-      ? 'Something went wrong. Please try again later.'
-      : err.message,
+    message: err.message,
+  });
+});
+
+app.use((req, res) => {
+  res.status(404).json({
+    message: 'Route not found',
   });
 });
 
 app.listen(PORT, () => {
-  console.log(`All ok ${PORT}`);
+  console.log(`the server is running ${PORT}`);
 });
