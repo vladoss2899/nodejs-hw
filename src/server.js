@@ -4,7 +4,7 @@ import pino from 'pino-http';
 import 'dotenv/config';
 
 const app = experss();
-const PORT = process.env.PORT ?? 4787;
+const PORT = process.env.PORT ?? 3000;
 
 app.use(experss.json());
 app.use(cors());
