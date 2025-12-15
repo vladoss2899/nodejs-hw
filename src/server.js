@@ -1,12 +1,12 @@
-import experss from 'express';
+import express from 'express';
 import cors from 'cors';
 import pino from 'pino-http';
 import 'dotenv/config';
 
-const app = experss();
+const app = express();
 const PORT = process.env.PORT ?? 4787;
 
-app.use(experss.json());
+app.use(express.json());
 app.use(cors());
 app.use(
   pino({
