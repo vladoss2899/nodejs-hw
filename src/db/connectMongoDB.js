@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { Note } from '../models/notes.js';
+import { Note } from '../models/note.js';
 
 export const connectionMongoDb = async () => {
   try {
