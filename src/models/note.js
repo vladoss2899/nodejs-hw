@@ -1,13 +1,12 @@
 import { Schema, model } from 'mongoose';
+import { TAGS } from '../constants/tags.js';
 
 const noteSchema = new Schema(
   {
     userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-    name: { type: String, required: true },
-    age: { type: Number, required: true },
-    gender: { type: String, required: true, enum: ['male', 'female', 'other'] },
-    avgMark: { type: Number, required: true },
-    onDuty: { type: Boolean, required: true, default: false },
+    title: { type: String, required: true, trim: true },
+    content: { type: String, trim: true, default: '' },
+    tag: { type: String, enum: TAGS, default: 'Todo' },
   },
   {
     timestamps: true,
@@ -15,6 +14,6 @@ const noteSchema = new Schema(
   },
 );
 
-noteSchema.index({ name: 'text' });
+noteSchema.index({ title: 'text', content: 'text' });
 
 export const Note = model('Note', noteSchema);

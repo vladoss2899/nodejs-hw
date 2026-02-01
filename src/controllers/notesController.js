@@ -2,15 +2,15 @@
 import { Note } from '../models/note.js';
 import createHttpError from 'http-errors';
 
-export const getNotes = async (req, res) => {
-  const { page = 1, perPage = 10, minMark, search } = req.query;
+export const getAllNotes = async (req, res) => {
+  const { page = 1, perPage = 10, tag, search } = req.query;
 
   const skip = (page - 1) * perPage;
 
   const notesQuery = Note.find({ userId: req.user._id });
 
-  if (minMark) {
-    notesQuery.where('avgMark').gte(minMark);
+  if (tag) {
+    notesQuery.where('tag').equals(tag);
   }
 
   if (search) {
@@ -19,26 +19,18 @@ export const getNotes = async (req, res) => {
     });
   }
 
-  // подібний приклад до ..↑.. тільки не потрібно шукати ідеально по індексу а можна вписати половину
-
-  // if (search) {
-  //   notesQuery.where({
-  //     name: { $regex: search, $options: 'i' },
-  //   });
-  // }
-
-  const [totalItems, notes] = await Promise.all([
+  const [totalNotes, notes] = await Promise.all([
     notesQuery.clone().countDocuments(),
     notesQuery.skip(skip).limit(perPage),
   ]);
 
-  const totalPages = Math.ceil(totalItems / perPage);
+  const totalPages = Math.ceil(totalNotes / perPage);
 
   res.status(200).json({
-    data: notes,
+    notes,
     page,
     perPage,
-    totalItems,
+    totalNotes,
     totalPages,
   });
 };
@@ -68,7 +60,7 @@ export const createNote = async (req, res) => {
     ...req.body,
     userId: req.user._id,
   });
-  res.status(201).json({ data: note });
+  res.status(201).json(note);
 };
 
 export const deleteNote = async (req, res) => {
@@ -83,7 +75,7 @@ export const deleteNote = async (req, res) => {
     throw createHttpError(404, 'Note not found');
   }
 
-  res.status(200).json({ data: note });
+  res.status(200).json(note);
 };
 
 export const updateNote = async (req, res) => {
@@ -99,5 +91,5 @@ export const updateNote = async (req, res) => {
     throw createHttpError(404, 'Note not found');
   }
 
-  res.status(200).json({ note });
+  res.status(200).json(note);
 };

@@ -8,7 +8,7 @@ import {
 
 import { Router } from 'express';
 import {
-  getNotes,
+  getAllNotes,
   getNoteById,
   createNote,
   deleteNote,
@@ -20,7 +20,7 @@ const router = Router();
 
 router.use('/notes', authenticate);
 
-router.get('/notes', celebrate(getNotesSchema), getNotes);
+router.get('/notes', celebrate(getNotesSchema), getAllNotes);
 router.get('/notes/:noteId', celebrate(NoteIdParams), getNoteById);
 router.post('/notes', celebrate(createNoteBodySchema), createNote);
 router.delete('/notes/:noteId', celebrate(NoteIdParams), deleteNote);

@@ -1,5 +1,6 @@
 import { Joi, Segments } from 'celebrate';
 import { isValidObjectId } from 'mongoose';
+import { TAGS } from '../constants/tags.js';
 
 export const getNotesSchema = {
   [Segments.QUERY]: {
@@ -10,11 +11,9 @@ export const getNotesSchema = {
 
 export const createNoteBodySchema = {
   [Segments.BODY]: Joi.object({
-    name: Joi.string().min(3).max(33).required(),
-    age: Joi.number().min(18).max(65).required(),
-    gender: Joi.string().valid('male', 'female', 'other').required(),
-    avgMark: Joi.number().min(1).max(12).required(),
-    onDuty: Joi.boolean(),
+    title: Joi.string().min(3).max(100).trim().required(),
+    content: Joi.string().max(2000).trim().allow('').default(''),
+    tag: Joi.string().valid(...TAGS),
   }),
 };
 
@@ -34,10 +33,8 @@ export const updateNoteSchema = {
     noteId: Joi.string().custom(objectIdValidator).required(),
   }),
   [Segments.BODY]: Joi.object({
-    name: Joi.string().min(3).max(33),
-    age: Joi.number().min(18).max(65),
-    gender: Joi.string().valid('male', 'female', 'other'),
-    avgMark: Joi.number().min(1).max(12),
-    onDuty: Joi.boolean(),
+    title: Joi.string().min(3).max(100).trim(),
+    content: Joi.string().max(2000).trim(),
+    tag: Joi.string().valid(...TAGS),
   }).min(1),
 };
