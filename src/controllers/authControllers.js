@@ -9,13 +9,13 @@ export const registerUser = async (req, res) => {
 
   const existingUser = await User.findOne({ email });
   if (existingUser) {
-    throw createHttpError(400, 'User with this email already exists');
+    throw createHttpError(400, 'Email in use');
   }
-  const heshedPassword = await bcrypt.hash(password, 10);
+  const hashedPassword = await bcrypt.hash(password, 10);
 
   const newUser = await User.create({
     email,
-    password: heshedPassword,
+    password: hashedPassword,
   });
 
   const newSession = await createSession(newUser._id);
@@ -28,11 +28,11 @@ export const loginUser = async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
   if (!user) {
-    throw createHttpError(401, 'Invalid email or password');
+    throw createHttpError(401, 'Invalid credentials');
   }
   const isValidPassword = await bcrypt.compare(password, user.password);
   if (!isValidPassword) {
-    throw createHttpError(401, 'Invalid email or password');
+    throw createHttpError(401, 'Invalid credentials');
   }
 
   await Session.deleteOne({ userId: user._id });
@@ -63,13 +63,13 @@ export const refreshSession = async (req, res) => {
   });
 
   if (!session) {
-    throw createHttpError(401, 'Invalid session');
+    throw createHttpError(401, 'Session not found');
   }
 
   const isRefreshTokenExpired =
-    new Date() > new Date(session.refreshTokenExpiresAt);
+    new Date() > new Date(session.refreshTokenValidUntil);
   if (isRefreshTokenExpired) {
-    throw createHttpError(401, 'Refresh token expired');
+    throw createHttpError(401, 'Session token expired');
   }
 
   await Session.deleteOne({

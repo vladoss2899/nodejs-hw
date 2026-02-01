@@ -8,8 +8,8 @@ import { connectionMongoDb } from './db/ConectMongoDB.js';
 import { logger } from './middleware/logger.js';
 import { notFoundHandler } from './middleware/notFoundHandler.js';
 import { errorHandler } from './middleware/errorHandler.js';
-import studentsRoutes from './routes/studentsRoutes.js';
-import authRoutes from './routes/authRouse.js';
+import notesRoutes from './routes/notesRoutes.js';
+import authRoutes from './routes/authRoutes.js';
 
 const app = express();
 const PORT = process.env.PORT ?? 3000;
@@ -21,7 +21,7 @@ app.use(cookieParser());
 app.use(cors());
 
 app.use(authRoutes);
-app.use(studentsRoutes);
+app.use(notesRoutes);
 
 app.use(notFoundHandler);
 app.use(errors());

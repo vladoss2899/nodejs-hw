@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 
-const studentsSchema = new Schema(
+const noteSchema = new Schema(
   {
     userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     name: { type: String, required: true },
@@ -15,6 +15,6 @@ const studentsSchema = new Schema(
   },
 );
 
-studentsSchema.index({ name: 'text' });
+noteSchema.index({ name: 'text' });
 
-export const Student = model('Student', studentsSchema);
+export const Note = model('Note', noteSchema);

@@ -1,6 +1,3 @@
-// DEPRECATED: duplicate of `src/routes/authRoutes.js` kept for backward compatibility.
-// The server uses `authRoutes.js`. You can safely remove this file if not required.
-
 import { Router } from 'express';
 import { celebrate } from 'celebrate';
 import {

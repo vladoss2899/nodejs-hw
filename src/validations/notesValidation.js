@@ -1,14 +1,14 @@
 import { Joi, Segments } from 'celebrate';
 import { isValidObjectId } from 'mongoose';
 
-export const getStudentsSchema = {
+export const getNotesSchema = {
   [Segments.QUERY]: {
     page: Joi.number().integer().min(1).default(1),
     perPage: Joi.number().integer().min(5).max(15).default(10),
   },
 };
 
-export const createStudentsBodySchema = {
+export const createNoteBodySchema = {
   [Segments.BODY]: Joi.object({
     name: Joi.string().min(3).max(33).required(),
     age: Joi.number().min(18).max(65).required(),
@@ -23,15 +23,15 @@ const objectIdValidator = (value, helpers) => {
   return !isValidId ? helpers.message('Invalid id format!') : value;
 };
 
-export const StudentsIdParams = {
+export const NoteIdParams = {
   [Segments.PARAMS]: Joi.object({
-    studentsId: Joi.string().custom(objectIdValidator).required(),
+    noteId: Joi.string().custom(objectIdValidator).required(),
   }),
 };
 
-export const updateStudentsSchema = {
+export const updateNoteSchema = {
   [Segments.PARAMS]: Joi.object({
-    studentsId: Joi.string().custom(objectIdValidator).required(),
+    noteId: Joi.string().custom(objectIdValidator).required(),
   }),
   [Segments.BODY]: Joi.object({
     name: Joi.string().min(3).max(33),
