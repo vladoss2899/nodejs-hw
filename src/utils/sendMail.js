@@ -22,12 +22,10 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-export const sendEmail = async (to, subject, html) => {
+export const sendEmail = async (options) => {
   const info = await transporter.sendMail({
     from: SMTP_FROM,
-    to,
-    subject,
-    html,
+    ...options,
   });
   return info;
 };

@@ -136,7 +136,7 @@ export const requestResetEmail = async (req, res) => {
   const html = compiled({ name: user.username || user.email, resetLink });
 
   try {
-    await sendEmail(user.email, 'Password reset', html);
+    await sendEmail({ to: user.email, subject: 'Password reset', html });
   } catch (err) {
     console.error('sendEmail error:', err);
     throw createHttpError(
