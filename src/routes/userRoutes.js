@@ -7,11 +7,6 @@ const router = Router();
 
 router.use('/users', authenticate);
 
-router.patch(
-  '/users/me/avatar',
-  authenticate,
-  upload.single('avatar'),
-  updateUserAvatar,
-);
+router.patch('/users/me/avatar', upload.single('avatar'), updateUserAvatar);
 
 export default router;

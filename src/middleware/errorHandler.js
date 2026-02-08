@@ -10,6 +10,14 @@ export const errorHandler = (err, req, res, next) => {
     return;
   }
 
+  // Обробка помилок з multer
+  if (err.message && err.message.includes('image')) {
+    res.status(400).json({
+      error: err.message,
+    });
+    return;
+  }
+
   const isProd = process.env.NODE_ENV === 'production';
 
   res.status(500).json({
