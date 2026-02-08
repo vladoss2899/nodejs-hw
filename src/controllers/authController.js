@@ -136,7 +136,12 @@ export const requestResetEmail = async (req, res) => {
   const html = compiled({ name: user.username || user.email, resetLink });
 
   try {
-    await sendEmail({ to: user.email, subject: 'Password reset', html });
+    await sendEmail({
+      from: process.env.SMTP_FROM,
+      to: user.email,
+      subject: 'Password reset',
+      html,
+    });
   } catch (err) {
     console.error('sendEmail error:', err);
     throw createHttpError(

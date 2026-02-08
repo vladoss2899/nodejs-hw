@@ -4,11 +4,10 @@ const SMTP_HOST = process.env.SMTP_HOST;
 const SMTP_PORT = process.env.SMTP_PORT;
 const SMTP_USER = process.env.SMTP_USER;
 const SMTP_PASSWORD = process.env.SMTP_PASSWORD;
-const SMTP_FROM = process.env.SMTP_FROM;
 
-if (!SMTP_HOST || !SMTP_USER || !SMTP_PASSWORD || !SMTP_FROM) {
+if (!SMTP_HOST || !SMTP_USER || !SMTP_PASSWORD) {
   throw new Error(
-    'Missing SMTP configuration. Please set SMTP_HOST, SMTP_USER, SMTP_PASSWORD and SMTP_FROM in .env',
+    'Missing SMTP configuration. Please set SMTP_HOST, SMTP_USER, SMTP_PASSWORD in .env',
   );
 }
 
@@ -23,9 +22,6 @@ const transporter = nodemailer.createTransport({
 });
 
 export const sendEmail = async (options) => {
-  const info = await transporter.sendMail({
-    from: SMTP_FROM,
-    ...options,
-  });
+  const info = await transporter.sendMail(options);
   return info;
 };
